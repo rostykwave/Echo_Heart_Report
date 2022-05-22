@@ -143,6 +143,11 @@ function evaluateHeartWall(ivs, lvWall) {
 }
 
 function evaluateHeartChamber(rv, la, aorta, lv) {
+    let rvText = '';
+    let laText = '';
+    let aortaText = '';
+    let lvText = '';
+
     switch (true) {
         case rv === 'D' && la === 'D' && aorta === 'D' && lv === 'D':
             return "Дилятація всіх камер серця. "
@@ -160,27 +165,27 @@ function evaluateHeartChamber(rv, la, aorta, lv) {
             return "Дилятація шлуночків серця. "
             break;
         
-        case rv !== 'D' && la !== 'D' && aorta !== 'D' && lv === 'D':
-            return "Дилятація лівого шлуночка. "
-            break;
-        
-        case rv === 'D' && la !== 'D' && aorta !== 'D' && lv !== 'D':
-            return "Дилятація правого шлуночка. "
-            break;
-        
-        case rv === 'D' && la === 'D' && aorta === 'D' && lv !== 'D':
-            return "Дилятація правого шлуночка, лівого передсердя та висхідного відділу аорти. "
-            break;
-        
-        case rv !== 'D' && la !== 'D' && aorta === 'D' && lv !== 'D':
-            return "Дилятація висхідного відділу аорти. "
-            break;
-        
         case rv !== 'D' && la === 'D' && aorta !== 'D' && lv === 'D':
             return "Дилятація лівих камер серця. "
             break;
-        case rv !== 'D' && la === 'D' && aorta === 'D' && lv === 'D':
-            return "Дилятація лівих камер серця та висхідного відділу ворти. "
+        
+        ////коли хоч якась камера диляьована, і коли жодна з попередніх умов не задовольнила
+        case rv === 'D' || la === 'D' || aorta === 'D' || lv === 'D':
+
+            if (rv === 'D') {
+                rvText = "правого  шлуночка, "; 
+            }
+            if (la === 'D') {
+                laText = "лівого передсердя, "; 
+            }
+            if (aorta === 'D') {
+                aortaText = "висхідного відділу аорти, "; 
+            }
+            if (lv === 'D') {
+                lvText = "лівого  шлуночка, "; 
+            }
+
+            return comaDotFix(`Дилятація ${rvText}${laText}${aortaText}${lvText}. `);
             break;
     
         default:
@@ -229,19 +234,19 @@ function evaluateValvesInsufficiency(mitral, aortic, tricuspid, laValve) {
            
             ////Врисування у змінну або пустоти або назву клапана і  величину недостатності
              if (mitral !== "") {
-                mitralText = `мітрального клапана ` + mitral + ', '; 
+                mitralText = `мітрального клапана: ` + mitral + ', '; 
             }
             
             if (aortic !== "") {
-                `аортального клапана ` + aortic + ', ';
+                aorticText = `аортального клапана: ` + aortic + ', ';
             }
 
             if (tricuspid !== "") {
-                tricuspidText = `тристулкового клапана ` + tricuspid + ', ';;
+                tricuspidText = `тристулкового клапана: ` + tricuspid + ', ';;
             }
 
-            if (laValve !== "" !== "") {
-                `клапана легеневої артерії ` + laValve + ', ';
+            if (laValve !== "") {
+                laValveText = `клапана легеневої артерії: ` + laValve + ', ';
             }
           ////////
 
