@@ -1,0 +1,22 @@
+@mixin grid($grid-gap: 30px) {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(-1 * #{$grid-gap});
+  margin-top: calc(-1 * #{$grid-gap});
+}
+@mixin grid__item($grid-gap: 30px, $grid-columns: 3) {
+  flex-basis: calc(100% / #{$grid-columns} - #{$grid-gap});
+  margin-left: $grid-gap;
+  margin-top: $grid-gap;
+}
+@mixin centeredFlex($type: flex) {
+  display: $type;
+  align-items: center;
+  justify-content: center;
+}
+// p {
+//   @include centeredFlex();
+// }
+// button {
+//   @include centeredFlex(inline-flex);
+// }
