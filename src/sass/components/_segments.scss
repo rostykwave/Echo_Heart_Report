@@ -3,15 +3,16 @@
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 3;
+
+        @include mq(mobile-only) {
+                padding: 7px;
+            }
 }
 
-.segments-flex{
-    display: flex;
-}
 
 .segments-grid{
     display: grid;
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(7,auto);
 
     text-align: start;
 }
@@ -19,13 +20,22 @@
     display: block;
     height: 50px;
 
-        @include mq(mobile-only) {
+    @include mq(mobile-only) {
                 font-size: 8px;
             }
+
+    @media screen and (max-width: 480px){
+        font-size: 6px;
+      }
 }
 
 .segments-label{
+
     @include mq(mobile-only){
         font-size: 8px;
     }
+
+    @media screen and (max-width: 480px){
+        font-size: 6px;
+      }
 }
