@@ -1,22 +1,22 @@
 {
-  "name": "parcel-project-template",
+  "name": "echo_heart_report",
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://goitacademy.github.io/parcel-project-template",
+  "homepage": "https://rostykwave.github.io/Echo_Heart_Report",
   "scripts": {
     "dev": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /parcel-project-template/"
+    "build": "parcel build src/*.html --public-url /Echo_Heart_Report/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goitacademy/parcel-project-template.git"
+    "url": "git+https://github.com/rostykwave/Echo_Heart_Report.git"
   },
   "keywords": [],
-  "author": "Alexander Repeta <alexander.repeta@gmail.com>",
+  "author": "Rostyslav Kovalchuk <rostykwave@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/goitacademy/parcel-project-template/issues"
+    "url": "https://github.com/rostykwave/Echo_Heart_Report/issues"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
