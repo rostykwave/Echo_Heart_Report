@@ -70,7 +70,8 @@ padding: 2px;
                 outline: 1px solid $hover-accent;
             }
 ///
-         &:focus-visible + .form-label__valves{
+         &:focus-visible + .form-label__valves,
+         &:not(:placeholder-shown) + .form-label__valves{
             transform: translateY(-280%);
             // transform: translateY(calc(-1 * (100% + 4px)));
          }
