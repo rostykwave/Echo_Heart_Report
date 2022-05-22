@@ -1,21 +1,26 @@
 .form {
-    padding: 40px;
+    // padding: 40px;
     margin: 0 auto;
     text-align: center;
 
-    width: calc(100% - 30px);
+    width: 100%;
+    // width: calc(100% - 5px);
 
-    @media screen and (min-width: 480px) {
-        width: 450px;
-    }
+    // @include mq(tablet){
+    //     width: calc(100% - 15px);;
+    // }
 
-    @media screen and (min-width: 1200px) {
-        width: 528px;
-    }
+    // @media screen and (min-width: 480px) {
+    //     width: 450px;
+    // }
 
-    background: #ffffff;
-    box-shadow: 9px 8px 43px -10px rgba(0, 0, 0, 0.25);
-    border-radius: 17px;
+    // @media screen and (min-width: 1200px) {
+    //     width: 528px;
+    // }
+
+    // background: #ffffff;
+    // box-shadow: 9px 8px 43px -10px rgba(0, 0, 0, 0.25);
+    // border-radius: 17px;
 }
 
 .form__title {

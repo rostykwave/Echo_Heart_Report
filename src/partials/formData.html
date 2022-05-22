@@ -1,4 +1,4 @@
-<section class="section">
+
   <div class="container">
     <svg width="200">
       <use href="./images/symbol-defs.svg#icon-RostMedical"></use>
@@ -7,18 +7,23 @@
     <form class="form" id="form">
       <h2 class="form__title">Протокол Ехо-КГ</h2>
 
-      <!-- ///chambersANDwalls -->
-      <include src="./partials/chambersANDwalls.html"></include>
-      <include src="./partials/datalist/chambers-datalist.html"></include>
 
-      <!-- ///valves -->
-      <include src="./partials/valves.html"></include>
-      <include src="./partials/datalist/valves-datalist.html"></include>
-
-      <button class="button" id="btn" type="submit">Висновок</button>
-
-      <div class="result" id="result"></div>
+      <div class="main-section">
+              <!-- ///chambersANDwalls -->
+              <include src="./partials/chambersANDwalls.html"></include>
+              <include src="./partials/datalist/chambers-datalist.html"></include>
+              
+              <!-- ///valves -->
+              <include src="./partials/valves.html"></include>
+              <include src="./partials/datalist/valves-datalist.html"></include>
+              
+              
+              <section class="section">
+                <button class="button" id="btn" type="submit">Висновок</button>
+              
+                <div class="result" id="result"></div>
+              </section>
+      </div>
 
     </form>
   </div>
-</section>
