@@ -13,13 +13,12 @@ let aortaResult = 'Spare';
 let ivsResult = 'Spare';
 let lvWallResult = 'Spare';
 let lvResult = 'Spare';
-
 let wallResult = 'Spare';
 let chamberResult = 'Spare';
-
+let efResult = 'Spare';
+let segmentResult = 'Spare';
 let val = 'Spare';
 let segm = 'Spare';
-
 let result = 'Spare';
 
 
@@ -31,24 +30,15 @@ refs.form.addEventListener('submit', onSubmit);
 ///Main function
 function onSubmit(e) {
     e.preventDefault();
-
     const formDataRaw = new FormData(e.currentTarget);
-
     const formData = {};
-
     formDataRaw.forEach((value, key) => {
-        // if (value === '') {
-        //     alert('Всі поля повинні бути заповнені');
-        //     throw 'Break';
-        // }
-
         formData[key] = value;
     })
     console.log(formData);
 
-
     //Destructuring
-    const { rv, la, aorta, ivs, lvWall, lv } = formData;
+    const { rv, la, aorta, ivs, lvWall, lv, ef } = formData;
 
     rvResult = dimentionCheck(Number(rv), 0.9, 2.6);
     laResult = dimentionCheck(Number(la), 1.9, 4);
@@ -56,6 +46,10 @@ function onSubmit(e) {
     ivsResult = dimentionCheck(Number(ivs), 0.6, 1.1);
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
+    efResult = `Фракція викиду: ${ef}%. `;
+    segmentResult = efCheck(Number(ef));
+    console.log(efResult);
+    console.log(segmentResult);
 
     /////Стінки
 
@@ -81,14 +75,14 @@ function onSubmit(e) {
     const { mCalc, aCalc, tCalc, laCalc } = formData;
 
 
-    segm = "Сегменти";
+    segm = "Сегменти. ";
     // EF, calc
     
     
 
 
     ///загальний висновок
-    result = resultOutput(ch, val, segm);
+    result = resultOutput(ch, val, segmentResult, efResult);
 
     console.log(result);
 
@@ -120,6 +114,13 @@ function dimentionCheck(heartPart, min, max) {
             return 'N';
             break;
     }
+}
+function efCheck(ef) {
+    if (ef < 50) {
+        return 'Сумарна і сегментарна скоротливість ЛШ дифузно знижена. ';
+    }
+    
+    return 'Сумарна сегментарна скоротливість ЛШ збережена. ';
 }
 
 function evaluateHeartWall(ivs, lvWall) {
@@ -213,8 +214,8 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val, segm) {
-    return ch + val + segm;
+function resultOutput(ch, val, segm, ef) {
+    return ch + val + segm + ef;
 }
 
 ///Клапани
