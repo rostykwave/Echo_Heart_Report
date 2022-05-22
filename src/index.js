@@ -17,6 +17,9 @@ let lvResult = 'Spare';
 let wallResult = 'Spare';
 let chamberResult = 'Spare';
 
+let val = 'Spare';
+let segm = 'Spare';
+
 let result = 'Spare';
 
 
@@ -54,27 +57,38 @@ function onSubmit(e) {
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
 
-    // console.log('rv', rvResult);
-    // console.log('la', laResult);
-    // console.log('aorta', aortaResult);
-    // console.log('ivs', ivsResult);
-    // console.log('lvWall', lvWallResult);
-    // console.log('lv', lvResult);
-
     /////Стінки
 
     wallResult = evaluateHeartWall(ivsResult, lvWallResult);
-
     // console.log(wallResult);
 
     ///Камери
 
     chamberResult = evaluateHeartChamber(rvResult, laResult, aortaResult, lvResult);
-
     // console.log(chamberResult);
 
+    const ch = evaluateMainResult(wallResult, chamberResult);
+
+
+    ////Клапани
+    ///Недостатність клапанів///////
+    const { mInsuf, aInsuf, tInsuf, laInsuf } = formData;
+     val = evaluateValvesInsufficiency(mInsuf, aInsuf, tInsuf, laInsuf);
+
+    
+    // console.log(val);
+     ///Кальциноз клапанів///////
+    const { mCalc, aCalc, tCalc, laCalc } = formData;
+
+
+    segm = "Сегменти";
+    // EF, calc
+    
+    
+
+
     ///загальний висновок
-    result = evaluateResult(wallResult, chamberResult);
+    result = resultOutput(ch, val, segm);
 
     console.log(result);
 
@@ -174,7 +188,7 @@ function evaluateHeartChamber(rv, la, aorta, lv) {
             break;
     }
 }
-function evaluateResult(wall, chamber) {
+function evaluateMainResult(wall, chamber) {
     switch (true) {
         case wall === 'Normal' && chamber === 'Normal':
             return "Розміри камер серця в межах норми. "
@@ -191,5 +205,59 @@ function evaluateResult(wall, chamber) {
         default:
             return chamber + wall;
             break;
+    }
+}
+
+function resultOutput(ch, val, segm) {
+    return ch + val + segm;
+}
+
+///Клапани
+function evaluateValvesInsufficiency(mitral, aortic, tricuspid, laValve) {
+    let mitralText = '';
+    let aorticText = '';
+    let tricuspidText = '';
+    let laValveText = '';
+
+    ////Перевірка чи введений хоч якийсь вміст
+    switch (true) {
+        case mitral === "" && aortic === "" && tricuspid === "" && laValve === "":
+            return '';
+            break;
+        
+        case mitral !== "" || aortic !== "" || tricuspid !== "" || laValve !== "":
+           
+            ////Врисування у змінну або пустоти або назву клапана і  величину недостатності
+             if (mitral !== "") {
+                mitralText = `мітрального клапана ` + mitral + ', '; 
+            }
+            
+            if (aortic !== "") {
+                `аортального клапана ` + aortic + ', ';
+            }
+
+            if (tricuspid !== "") {
+                tricuspidText = `тристулкового клапана ` + tricuspid + ', ';;
+            }
+
+            if (laValve !== "" !== "") {
+                `клапана легеневої артерії ` + laValve + ', ';
+            }
+          ////////
+
+            return comaDotFix(`Недостатність ${mitralText}${aorticText}${tricuspidText}${laValveText}. `);
+            break;
+        
+        default:
+            return 'Normal';
+            break;
+    }
+
+}
+
+///Функція яка бачить рядок ", ." заміняє на ". "
+function comaDotFix(propString) {
+    if (propString.endsWith(', . ')) {
+        return propString.replace(", . ", ". ");
     }
 }
