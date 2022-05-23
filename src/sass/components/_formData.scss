@@ -226,7 +226,10 @@
     line-height: 119.18%;
     color: #ffffff;
 
-    margin-right: 50px;
+    @include mq(tablet) {
+            margin-right: 50px;
+        }
+
 }
 
 .result-textarea {
