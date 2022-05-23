@@ -67,12 +67,15 @@ function onSubmit(e) {
     ////Клапани
     ///Недостатність клапанів///////
     const { mInsuf, aInsuf, tInsuf, laInsuf } = formData;
-     val = evaluateValvesInsufficiency(mInsuf, aInsuf, tInsuf, laInsuf);
+    const valInsuf = evaluateValvesInsufficiency(mInsuf, aInsuf, tInsuf, laInsuf);
 
-    
-    // console.log(val);
      ///Кальциноз клапанів///////
     const { mCalc, aCalc, tCalc, laCalc } = formData;
+    const valCalc = evaluateValvesCalcification(mCalc, aCalc, tCalc, laCalc);
+
+    ///Загальний звіт по клапанах\
+    const val = valInsuf + valCalc;
+
 
 
     segm = "Сегменти. ";
@@ -219,6 +222,7 @@ function resultOutput(ch, val, segm, ef) {
 }
 
 ///Клапани
+/////Оцінка недостатності клапанів
 function evaluateValvesInsufficiency(mitral, aortic, tricuspid, laValve) {
     let mitralText = '';
     let aorticText = '';
@@ -260,7 +264,56 @@ function evaluateValvesInsufficiency(mitral, aortic, tricuspid, laValve) {
     }
 
 }
+////Загальний втсновок кальцифікації всіх клапанів
+function evaluateValvesCalcification(mitral, aortic, tricuspid, laValve) {
+    let mitralText = 'мітрального клапана';
+    let aorticText = 'аортального клапана';
+    let tricuspidText = 'тристулкового клапана';
+    let laValveText = 'клапана легеневого артерії';
 
+    mitralText = oneValveCalcification( mitralText, mitral);
+    aorticText = oneValveCalcification( aorticText, aortic);
+    tricuspidText = oneValveCalcification( tricuspidText, tricuspid);
+    laValveText = oneValveCalcification(laValveText, laValve);
+    
+    if (mitralText.startsWith('Фіброзні') && mitralText.startsWith('Фіброзні')) {
+        mitralText = `Фіброзні зміни мітрального та аортального клапанів. `;
+        aorticText = '';
+    }
+
+    if (mitralText.startsWith('Стулки ущільнені') && mitralText.startsWith('Стулки ущільнені')) {
+        mitralText = `Стулки мітрального та аортального клапанів ущільнені. `;
+        aorticText = '';
+    }
+
+    
+
+    return mitralText + aorticText + tricuspidText + laValveText;
+}
+///Оцінка кальцифікації лише одного клапана
+function oneValveCalcification(valveName, valveResult) {
+    switch (true) {
+        case valveResult === 'Стулки ущільнені':
+            return `Стулки ${valveName} ущільнені. `
+            break;
+        
+        case valveResult === 'Фіброзні зміни' || valveResult === 'Са задньої стулки':
+            return `${valveResult} ${valveName}. `;
+            break;
+        
+        case valveResult === 'Відносний':
+            return `${valveResult} кальциноз ${valveName}. `
+            break;
+        
+        case valveResult.endsWith('+'):
+            return `Кальциноз ${valveName} ${valveResult}. `
+            break;
+    
+        default:
+            return '';
+            break;
+    }
+}
 ///Функція яка бачить рядок ", ." заміняє на ". "
 function comaDotFix(propString) {
     if (propString.endsWith(', . ')) {
