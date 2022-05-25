@@ -210,6 +210,10 @@
 
 // Button
 .button {
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+
     // Basic btn
     display: inline-block;
     font-family: inherit;
@@ -226,32 +230,37 @@
     line-height: 119.18%;
     color: #ffffff;
 
-    @include mq(tablet) {
-            margin-right: 50px;
-        }
-
 }
 
 .result-textarea {
-    margin-top: 26px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 150px;
+
     padding: 12px 16px;
     border: 1px solid #cbcbcb;
 
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.14;
     letter-spacing: 0.01em;
     text-align: left;
 
     @include mq(tablet){
-       width: 470px;
-       margin-top: 0;
+    //    width: 500px;
+       font-size: 18px;
+    }
+
+    @include mq(desktop){
+       max-width: 700px;
+       font-size: 20px;
     }
 }
 
-.result--centered{
-    @include mq(tablet) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-}
-}
+// .result--centered{
+//     text-align: center;
+// //     @include mq(tablet) {
+// //             display: flex;
+// //             align-items: center;
+// //             justify-content: center;
+// // }
+// }
