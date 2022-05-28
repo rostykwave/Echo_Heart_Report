@@ -15,10 +15,10 @@ let lvWallResult = 'Spare';
 let lvResult = 'Spare';
 let wallResult = 'Spare';
 let chamberResult = 'Spare';
-
+let segments = 'Spare';
 let segmentResult = 'Spare';
 let val = 'Spare';
-let segm = 'Spare';
+let segmDisplay = 'Spare';
 let result = 'Spare';
 
 
@@ -46,8 +46,9 @@ function onSubmit(e) {
     ivsResult = dimentionCheck(Number(ivs), 0.6, 1.1);
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
-  
-    segmentResult = efCheck(Number(ef));
+
+    segments = checkSegments(formData);
+    segmentResult = evaluateSegmentsAndEF(segments, Number(ef));
     
     console.log(segmentResult);
 
@@ -78,7 +79,7 @@ function onSubmit(e) {
 
 
 
-    segm = "Сегменти. ";
+
     // EF, calc
     
     
@@ -119,23 +120,7 @@ function dimentionCheck(heartPart, min, max) {
             break;
     }
 }
-function efCheck(ef) {
 
-    switch (true) {
-        case ef === 0:
-            Report.info('Увага', `Заповніть поле з пустим вмістом`);
-            return '';
-            break;
-        
-        case ef < 50:
-            return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
-            break;
-    
-        default:
-            return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
-            break;
-    }
-}
 
 function evaluateHeartWall(ivs, lvWall) {
     switch (true) {
@@ -350,3 +335,66 @@ function comaDotFix(propString) {
     console.log(pattern.test(propString));
 
 }
+
+function checkSegments(formData){
+   
+    for (const key in formData) {
+
+        if (key.startsWith('segm')) {
+            if (formData[key] !== 'N' && formData[key] !== 'X') {
+                return `Порушення сегментарної скоротливості (див. табл.). `;
+            }
+        }
+    }
+
+    return '';
+
+}
+
+function evaluateSegmentsAndEF(segments, ef) {
+///перебір об'єкту і аналіз
+    const efRes = `Фракція викиду: ${ef}%.`;
+
+    switch (true) {
+        case ef === 0:
+            Report.info('Увага', `Заповніть поле з пустим вмістом`);
+            return '';
+            break;
+        
+        case segments === '':
+            return '';
+            break;
+        
+        case segments !== '':
+            return `${segments} ${efRes}`
+            break;
+        
+        case ef < 50:
+            return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
+            break;
+    
+        default:
+            return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
+            break;
+
+    }
+    
+}
+
+// function efCheck(ef) {
+
+//     switch (true) {
+//         case ef === 0:
+//             Report.info('Увага', `Заповніть поле з пустим вмістом`);
+//             return '';
+//             break;
+        
+//         case ef < 50:
+//             return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
+//             break;
+    
+//         default:
+//             return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
+//             break;
+//     }
+// }
