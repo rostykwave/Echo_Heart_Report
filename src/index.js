@@ -105,6 +105,7 @@ function dimentionCheck(heartPart, min, max) {
             break;
         case heartPart === 0:
             Report.info('Увага', `Заповніть поле з пустим вмістом`);
+            return '';
             break;
         case heartPart > max:
             return 'D';
@@ -128,6 +129,10 @@ function efCheck(ef) {
 
 function evaluateHeartWall(ivs, lvWall) {
     switch (true) {
+        case ivs === '' || lvWall === '':
+            return "";
+            break;
+        
         case ivs === 'D' && lvWall === 'D':
             return "Гіпертрофія стінок лівого шлуночка. ";
             break;
@@ -152,7 +157,12 @@ function evaluateHeartChamber(rv, la, aorta, lv) {
     let aortaText = '';
     let lvText = '';
 
+
     switch (true) {
+        case rv === '' || la === '' || aorta === '' || lv === '':
+            return ""
+            break;
+        
         case rv === 'D' && la === 'D' && aorta === 'D' && lv === 'D':
             return "Дилятація всіх камер серця. "
             break;
