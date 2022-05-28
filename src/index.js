@@ -15,7 +15,7 @@ let lvWallResult = 'Spare';
 let lvResult = 'Spare';
 let wallResult = 'Spare';
 let chamberResult = 'Spare';
-let efResult = 'Spare';
+
 let segmentResult = 'Spare';
 let val = 'Spare';
 let segm = 'Spare';
@@ -46,9 +46,9 @@ function onSubmit(e) {
     ivsResult = dimentionCheck(Number(ivs), 0.6, 1.1);
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
-    efResult = `Фракція викиду: ${ef}%. `;
+  
     segmentResult = efCheck(Number(ef));
-    console.log(efResult);
+    
     console.log(segmentResult);
 
     /////Стінки
@@ -85,7 +85,7 @@ function onSubmit(e) {
 
 
     ///загальний висновок
-    result = resultOutput(ch, val, segmentResult, efResult);
+    result = resultOutput(ch, val, segmentResult);
 
     console.log(result);
 
@@ -120,11 +120,21 @@ function dimentionCheck(heartPart, min, max) {
     }
 }
 function efCheck(ef) {
-    if (ef < 50) {
-        return 'Сумарна і сегментарна скоротливість ЛШ дифузно знижена. ';
-    }
+
+    switch (true) {
+        case ef === 0:
+            Report.info('Увага', `Заповніть поле з пустим вмістом`);
+            return '';
+            break;
+        
+        case ef < 50:
+            return 'Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. ';
+            break;
     
-    return 'Сумарна сегментарна скоротливість ЛШ збережена. ';
+        default:
+            return 'Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. ';
+            break;
+    }
 }
 
 function evaluateHeartWall(ivs, lvWall) {
@@ -227,8 +237,8 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val, segm, ef) {
-    return ch + val + segm + ef;
+function resultOutput(ch, val, segm) {
+    return ch + val + segm;
 }
 
 ///Клапани
