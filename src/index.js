@@ -3,6 +3,9 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import { refs } from './js/refs';
 
+
+import { diastolicRes } from './js/components/diastolic';
+
 import { segmentsRes } from './js/components/segments';
 import { segmentsRender } from './js/components/segments';
 
@@ -94,8 +97,11 @@ function onSubmit(e) {
 
 
 
+    const { diastolDysf, diastolDysfPlus } = formData;
 
     // new consts
+    const diastolicResult = diastolicRes(diastolDysf, diastolDysfPlus);
+    
     const segmentResult = segmentsRes(formData, Number(ef));
     const efResult = efREs(ef);
     const segmTextCopy = segmentsRender(formData);
@@ -103,7 +109,7 @@ function onSubmit(e) {
 
 
     ///загальний висновок
-    result = resultOutput(ch, val, segmentResult, efResult);
+    result = resultOutput(ch, val, diastolicResult, segmentResult, efResult);
     // console.log(result);
     refs.result.textContent = result;
 
@@ -242,11 +248,11 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val, segm, ef) {
+function resultOutput(ch, val, diastolic, segm, ef) {
     if (segm.startsWith('Порушення')) {
-       return segm + ef + ch + val; 
+       return segm + ef + ch + val + diastolic; 
     }
-    return ch + val + segm + ef;
+    return ch + val + diastolic + segm + ef;
 }
 
 ///Клапани
