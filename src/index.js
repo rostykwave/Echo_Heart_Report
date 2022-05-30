@@ -1,14 +1,19 @@
 import './sass/main.scss';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
+import { refs } from './js/refs';
+
 import { segmentsRes } from './js/components/segments';
 import { efREs } from './js/components/ef';
 
+import { copyResult } from './js/result/copyResult'; 
 
-const refs = {
-    form: document.querySelector('#form'),
-    result: document.querySelector('#result'),
-}
+
+
+// const refs = {
+//     form: document.querySelector('#form'),
+//     result: document.querySelector('#result'),
+// }
 
 
 let rvResult = 'Spare';
@@ -93,10 +98,13 @@ function onSubmit(e) {
 
     ///загальний висновок
     result = resultOutput(ch, val, segmentResult, efResult);
-
-    console.log(result);
-
+    // console.log(result);
     refs.result.textContent = result;
+
+
+    ///Висновок для копіювання в медичний звіт
+    // const copyResult = 'ggdg';
+    refs.copyRes.textContent = copyResult(formData,result);
 }
 
 ///Additional functions
