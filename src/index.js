@@ -3,7 +3,7 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import { refs } from './js/refs';
 
-
+import { pulmoHypert } from './js/components/pulmonaryHypertension';
 import { diastolicRes } from './js/components/diastolic';
 
 import { segmentsRes } from './js/components/segments';
@@ -97,11 +97,12 @@ function onSubmit(e) {
 
 
 
-    const { diastolDysf, diastolDysfPlus } = formData;
+    const { pulmonaryHypertension, diastolDysf, diastolDysfPlus } = formData;
 
     // new consts
     const diastolicResult = diastolicRes(diastolDysf, diastolDysfPlus);
-    
+    const pulmoHypertResult = pulmoHypert(pulmonaryHypertension);
+
     const segmentResult = segmentsRes(formData, Number(ef));
     const efResult = efREs(ef);
     const segmTextCopy = segmentsRender(formData);
@@ -109,7 +110,7 @@ function onSubmit(e) {
 
 
     ///загальний висновок
-    result = resultOutput(ch, val, diastolicResult, segmentResult, efResult);
+    result = resultOutput(ch, val,pulmoHypertResult,  diastolicResult, segmentResult, efResult);
     // console.log(result);
     refs.result.textContent = result;
 
@@ -248,11 +249,11 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val, diastolic, segm, ef) {
+function resultOutput(ch, val,pulmo, diastolic, segm, ef) {
     if (segm.startsWith('Порушення')) {
-       return segm + ef + ch + val + diastolic; 
+       return segm + ef + ch + val + pulmo + diastolic; 
     }
-    return ch + val + diastolic + segm + ef;
+    return ch + val + pulmo + diastolic + segm + ef;
 }
 
 ///Клапани
