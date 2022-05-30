@@ -1,6 +1,10 @@
 import './sass/main.scss';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
+import { segmentsRes } from './js/components/segments';
+import { efREs } from './js/components/ef';
+
+
 const refs = {
     form: document.querySelector('#form'),
     result: document.querySelector('#result'),
@@ -15,10 +19,10 @@ let lvWallResult = 'Spare';
 let lvResult = 'Spare';
 let wallResult = 'Spare';
 let chamberResult = 'Spare';
-let segments = 'Spare';
-let segmentResult = 'Spare';
+// let segments = 'Spare';
+// let segmentResult = 'Spare';
 let val = 'Spare';
-let segmDisplay = 'Spare';
+// let segmDisplay = 'Spare';
 let result = 'Spare';
 
 
@@ -47,10 +51,11 @@ function onSubmit(e) {
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
 
-    segments = checkSegments(formData);
-    segmentResult = evaluateSegmentsAndEF(segments, Number(ef));
+    // segments = checkSegments(formData);
+    // segmentResult = evaluateSegmentsAndEF(segments, Number(ef));
     
-    console.log(segmentResult);
+    // console.log(segmentResult);
+    // console.log(segmentsRes(formData,Number(ef)));
 
     /////Стінки
 
@@ -80,13 +85,14 @@ function onSubmit(e) {
 
 
 
-    // EF, calc
-    
+    // new consts
+    const segmentResult = segmentsRes(formData, Number(ef));
+    const efResult = efREs(ef);
     
 
 
     ///загальний висновок
-    result = resultOutput(ch, val, segmentResult);
+    result = resultOutput(ch, val, segmentResult, efResult);
 
     console.log(result);
 
@@ -222,8 +228,11 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val, segm) {
-    return ch + val + segm;
+function resultOutput(ch, val, segm, ef) {
+    if (segm.startsWith('Порушення')) {
+       return segm + ef + ch + val; 
+    }
+    return ch + val + segm + ef;
 }
 
 ///Клапани
@@ -336,50 +345,50 @@ function comaDotFix(propString) {
 
 }
 
-function checkSegments(formData){
+// function checkSegments(formData){
    
-    for (const key in formData) {
+//     for (const key in formData) {
 
-        if (key.startsWith('segm')) {
-            if (formData[key] !== 'N' && formData[key] !== 'X') {
-                return `Порушення сегментарної скоротливості (див. табл.). `;
-            }
-        }
-    }
+//         if (key.startsWith('segm')) {
+//             if (formData[key] !== 'N' && formData[key] !== 'X') {
+//                 return `Порушення сегментарної скоротливості (див. табл.). `;
+//             }
+//         }
+//     }
 
-    return '';
+//     return '';
 
-}
+// }
 
-function evaluateSegmentsAndEF(segments, ef) {
-///перебір об'єкту і аналіз
-    const efRes = `Фракція викиду: ${ef}%.`;
+// function evaluateSegmentsAndEF(segments, ef) {
+// ///перебір об'єкту і аналіз
+//     const efRes = `Фракція викиду: ${ef}%. `;
 
-    switch (true) {
-        case ef === 0:
-            Report.info('Увага', `Заповніть поле з пустим вмістом`);
-            return '';
-            break;
+//     switch (true) {
+//         case ef === 0:
+//             Report.info('Увага', `Заповніть поле з пустим вмістом`);
+//             return '';
+//             break;
         
-        case segments === '':
-            return '';
-            break;
+//         case segments === '':
+//             return '';
+//             break;
         
-        case segments !== '':
-            return `${segments} ${efRes}`
-            break;
+//         case segments !== '':
+//             return `${segments} ${efRes}`
+//             break;
         
-        case ef < 50:
-            return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
-            break;
+//         case ef < 50:
+//             return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
+//             break;
     
-        default:
-            return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
-            break;
+//         default:
+//             return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
+//             break;
 
-    }
+//     }
     
-}
+// }
 
 // function efCheck(ef) {
 
