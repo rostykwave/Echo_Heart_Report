@@ -1,9 +1,7 @@
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
 export const segmentsRes = (formData, ef) => {
-    // console.log('segments');
 
-    // console.log(ef);
     if (ef === 0) {
        Report.info('Увага', `Заповніть поле з даними Фракції викиду`);
             return ''; 
@@ -17,13 +15,6 @@ export const segmentsRes = (formData, ef) => {
             }
         }
     }
-
-    // if (ef < 50) {
-    //     return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. `;
-    // } else {
-    //     return `Сумарна сегментарна скоротливість ЛШ збережена. `;
-    
-    // } 
 
     return `Сумарна і сегментарна скоротливість ЛШ ${ef < 50 ? 'дифузно знижена' : 'збережена'}. `;
 
@@ -39,5 +30,8 @@ export const segmentsRender = (formData) => {
         }
     }
 
-    return segmArray.join('-');
+    const pattern = segmArray.join('-');
+    const normalPattern = 'N-N-N-N-N-N-N-N-N-N-N-N-X-N-N-X-N-N';
+
+    return pattern === normalPattern ? '' : `Таблиця сегментів у вигляді рядка: ${pattern}. `;
 }
