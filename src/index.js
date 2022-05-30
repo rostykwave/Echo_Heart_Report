@@ -290,12 +290,12 @@ function evaluateValvesCalcification(mitral, aortic, tricuspid, laValve) {
     tricuspidText = oneValveCalcification( tricuspidText, tricuspid);
     laValveText = oneValveCalcification(laValveText, laValve);
     
-    if (mitralText.startsWith('Фіброзні') && mitralText.startsWith('Фіброзні')) {
+    if (mitralText.startsWith('Фіброзні') && aorticText.startsWith('Фіброзні')) {
         mitralText = `Фіброзні зміни мітрального та аортального клапанів. `;
         aorticText = '';
     }
 
-    if (mitralText.startsWith('Стулки ущільнені') && mitralText.startsWith('Стулки ущільнені')) {
+    if (mitralText.startsWith('Стулки ущільнені') && aorticText.startsWith('Стулки ущільнені')) {
         mitralText = `Стулки мітрального та аортального клапанів ущільнені. `;
         aorticText = '';
     }
