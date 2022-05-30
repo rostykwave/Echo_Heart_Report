@@ -4,6 +4,10 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 import { refs } from './js/refs';
 
 import { segmentsRes } from './js/components/segments';
+import { segmentsRender } from './js/components/segments';
+
+
+
 import { efREs } from './js/components/ef';
 
 import { copyResult } from './js/result/copyResult'; 
@@ -45,6 +49,7 @@ function onSubmit(e) {
         formData[key] = value;
     })
     console.log(formData);
+
 
     //Destructuring
     const { rv, la, aorta, ivs, lvWall, lv, ef } = formData;
@@ -93,6 +98,7 @@ function onSubmit(e) {
     // new consts
     const segmentResult = segmentsRes(formData, Number(ef));
     const efResult = efREs(ef);
+    const segmTextCopy = segmentsRender(formData);
     
 
 
@@ -104,7 +110,7 @@ function onSubmit(e) {
 
     ///Висновок для копіювання в медичний звіт
     // const copyResult = 'ggdg';
-    refs.copyRes.textContent = copyResult(formData,result);
+    refs.copyRes.textContent = copyResult(formData,result,segmTextCopy);
 }
 
 ///Additional functions

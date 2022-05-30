@@ -28,3 +28,16 @@ export const segmentsRes = (formData, ef) => {
     return `Сумарна і сегментарна скоротливість ЛШ ${ef < 50 ? 'дифузно знижена' : 'збережена'}. `;
 
 }
+
+export const segmentsRender = (formData) => {
+    const segmArray = [];
+
+    for (const key in formData) {
+
+        if (key.startsWith('segm')) {
+            segmArray.push(formData[key])
+        }
+    }
+
+    return segmArray.join('-');
+}
