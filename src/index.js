@@ -5,6 +5,7 @@ import { refs } from './js/refs';
 
 ///Helpers
 import { comaDotFix } from './js/helpers/comaDotFix';
+import {onRightAndLeftArrows} from './js/helpers/onRightAndLeftArrows';
 ///////\\Helpers
 
 ////Valves
@@ -44,6 +45,9 @@ let result = 'Spare';
 
 
 refs.form.addEventListener('submit', onSubmit);
+///Переміщення між інпутами
+document.addEventListener('keydown', onRightAndLeftArrows);
+
 
 ///Main function
 function onSubmit(e) {
