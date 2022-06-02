@@ -3,6 +3,16 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import { refs } from './js/refs';
 
+///Helpers
+import { comaDotFix } from './js/helpers/comaDotFix';
+///////\\Helpers
+
+////Valves
+import { evaluateValvesInsufficiency } from './js/components/valves/evaluateValvesInsufficiency';
+import { evaluateValvesCalcification } from './js/components/valves/evaluateValvesCalcification';
+import { valvesAddInfo } from './js/components/valves/valvesAddInfo';
+////////\\Valves
+
 import { pulmoHypert } from './js/components/pulmonaryHypertension';
 import { diastolicRes } from './js/components/diastolic';
 
@@ -15,12 +25,6 @@ import { efREs } from './js/components/ef';
 
 import { copyResult } from './js/result/copyResult'; 
 
-
-
-// const refs = {
-//     form: document.querySelector('#form'),
-//     result: document.querySelector('#result'),
-// }
 
 
 let rvResult = 'Spare';
@@ -39,9 +43,6 @@ let result = 'Spare';
 
 
 refs.form.addEventListener('submit', onSubmit);
-// const formData = {};
-
-
 
 ///Main function
 function onSubmit(e) {
@@ -64,11 +65,6 @@ function onSubmit(e) {
     lvWallResult = dimentionCheck(Number(lvWall), 0.6, 1.1);
     lvResult = dimentionCheck(Number(lv), 3.5, 5.7);
 
-    // segments = checkSegments(formData);
-    // segmentResult = evaluateSegmentsAndEF(segments, Number(ef));
-    
-    // console.log(segmentResult);
-    // console.log(segmentsRes(formData,Number(ef)));
 
     /////Стінки
 
@@ -92,8 +88,14 @@ function onSubmit(e) {
     const { mCalc, aCalc, tCalc, laCalc } = formData;
     const valCalc = evaluateValvesCalcification(mCalc, aCalc, tCalc, laCalc);
 
+    ////ADD клапанів///////
+    const { mAdd, aAdd, tAdd, laAdd } = formData;
+    const valvAdd = valvesAddInfo(mAdd, aAdd, tAdd, laAdd);
+
+   
+
     ///Загальний звіт по клапанах\
-    const val = valInsuf + valCalc;
+    const val = valInsuf + valCalc + valvAdd;
 
 
 
@@ -255,176 +257,3 @@ function resultOutput(ch, val,pulmo, diastolic, segm, ef) {
     }
     return ch + val + pulmo + diastolic + segm + ef;
 }
-
-///Клапани
-/////Оцінка недостатності клапанів
-function evaluateValvesInsufficiency(mitral, aortic, tricuspid, laValve) {
-    let mitralText = '';
-    let aorticText = '';
-    let tricuspidText = '';
-    let laValveText = '';
-
-    ////Перевірка чи введений хоч якийсь вміст
-    switch (true) {
-        case mitral === "" && aortic === "" && tricuspid === "" && laValve === "":
-            return '';
-            break;
-        
-        case mitral !== "" || aortic !== "" || tricuspid !== "" || laValve !== "":
-           
-            ////Врисування у змінну або пустоти або назву клапана і  величину недостатності
-             if (mitral !== "") {
-                mitralText = `мітрального клапана: ` + mitral + ', '; 
-            }
-            
-            if (aortic !== "") {
-                aorticText = `аортального клапана: ` + aortic + ', ';
-            }
-
-            if (tricuspid !== "") {
-                tricuspidText = `тристулкового клапана: ` + tricuspid + ', ';;
-            }
-
-            if (laValve !== "") {
-                laValveText = `клапана легеневої артерії: ` + laValve + ', ';
-            }
-          ////////
-
-            return comaDotFix(`Недостатність ${mitralText}${aorticText}${tricuspidText}${laValveText}. `);
-            break;
-        
-        default:
-            return 'Normal';
-            break;
-    }
-
-}
-////Загальний втсновок кальцифікації всіх клапанів
-function evaluateValvesCalcification(mitral, aortic, tricuspid, laValve) {
-    let mitralText = 'мітрального клапана';
-    let aorticText = 'аортального клапана';
-    let tricuspidText = 'тристулкового клапана';
-    let laValveText = 'клапана легеневого артерії';
-
-    mitralText = oneValveCalcification( mitralText, mitral);
-    aorticText = oneValveCalcification( aorticText, aortic);
-    tricuspidText = oneValveCalcification( tricuspidText, tricuspid);
-    laValveText = oneValveCalcification(laValveText, laValve);
-    
-    if (mitralText.startsWith('Фіброзні') && aorticText.startsWith('Фіброзні')) {
-        mitralText = `Фіброзні зміни мітрального та аортального клапанів. `;
-        aorticText = '';
-    }
-
-    if (mitralText.startsWith('Стулки ущільнені') && aorticText.startsWith('Стулки ущільнені')) {
-        mitralText = `Стулки мітрального та аортального клапанів ущільнені. `;
-        aorticText = '';
-    }
-
-    
-
-    return mitralText + aorticText + tricuspidText + laValveText;
-}
-///Оцінка кальцифікації лише одного клапана
-function oneValveCalcification(valveName, valveResult) {
-    switch (true) {
-        case valveResult === 'Стулки ущільнені':
-            return `Стулки ${valveName} ущільнені. `
-            break;
-        
-        case valveResult === 'Фіброзні зміни' || valveResult === 'Са задньої стулки':
-            return `${valveResult} ${valveName}. `;
-            break;
-        
-        case valveResult === 'Відносний':
-            return `${valveResult} кальциноз ${valveName}. `
-            break;
-        
-        case valveResult.endsWith('+'):
-            return `Кальциноз ${valveName} ${valveResult}. `
-            break;
-    
-        default:
-            return '';
-            break;
-    }
-}
-///Функція яка бачить рядок ", ." заміняє на ". "
-function comaDotFix(propString) {
-    // if (propString.endsWith(', . ')) {
-    //     return propString.replace(", . ", ". ");
-    // }
-
-    const pattern = /, . $/ig;
-
-    if (pattern.test(propString)) {
-        return propString.replace(pattern, ". ");
-    }
-
-    console.log('Рядок не пройшов перевірку патерном: ', propString.match(pattern));
-    console.log(pattern.test(propString));
-
-}
-
-// function checkSegments(formData){
-   
-//     for (const key in formData) {
-
-//         if (key.startsWith('segm')) {
-//             if (formData[key] !== 'N' && formData[key] !== 'X') {
-//                 return `Порушення сегментарної скоротливості (див. табл.). `;
-//             }
-//         }
-//     }
-
-//     return '';
-
-// }
-
-// function evaluateSegmentsAndEF(segments, ef) {
-// ///перебір об'єкту і аналіз
-//     const efRes = `Фракція викиду: ${ef}%. `;
-
-//     switch (true) {
-//         case ef === 0:
-//             Report.info('Увага', `Заповніть поле з пустим вмістом`);
-//             return '';
-//             break;
-        
-//         case segments === '':
-//             return '';
-//             break;
-        
-//         case segments !== '':
-//             return `${segments} ${efRes}`
-//             break;
-        
-//         case ef < 50:
-//             return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
-//             break;
-    
-//         default:
-//             return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
-//             break;
-
-//     }
-    
-// }
-
-// function efCheck(ef) {
-
-//     switch (true) {
-//         case ef === 0:
-//             Report.info('Увага', `Заповніть поле з пустим вмістом`);
-//             return '';
-//             break;
-        
-//         case ef < 50:
-//             return `Сумарна і сегментарна скоротливість ЛШ дифузно знижена. Фракція викиду: ${ef}%. `;
-//             break;
-    
-//         default:
-//             return `Сумарна сегментарна скоротливість ЛШ збережена. Фракція викиду: ${ef}%. `;
-//             break;
-//     }
-// }
