@@ -14,6 +14,7 @@ import { valvesAddInfo } from './js/components/valves/valvesAddInfo';
 ////////\\Valves
 
 import { pulmoHypert } from './js/components/pulmonaryHypertension';
+import { pericardialFluidRes } from './js/components/pericardialFluidRes';
 import { diastolicRes } from './js/components/diastolic';
 
 import { segmentsRes } from './js/components/segments';
@@ -99,11 +100,14 @@ function onSubmit(e) {
 
 
 
-    const { pulmonaryHypertension, diastolDysf, diastolDysfPlus } = formData;
+    const { pulmonaryHypertension, perFluid, diastolDysf, diastolDysfPlus } = formData;
 
     // new consts
-    const diastolicResult = diastolicRes(diastolDysf, diastolDysfPlus);
+    
     const pulmoHypertResult = pulmoHypert(pulmonaryHypertension);
+
+    const pericardialFluidResult = pericardialFluidRes(perFluid);
+    const diastolicResult = diastolicRes(diastolDysf, diastolDysfPlus);
 
     const segmentResult = segmentsRes(formData, Number(ef));
     const efResult = efREs(ef);
@@ -112,7 +116,7 @@ function onSubmit(e) {
 
 
     ///загальний висновок
-    result = resultOutput(ch, val,pulmoHypertResult,  diastolicResult, segmentResult, efResult);
+    result = resultOutput(ch, val,pulmoHypertResult, pericardialFluidResult,  diastolicResult, segmentResult, efResult);
     // console.log(result);
     refs.result.textContent = result;
 
@@ -251,9 +255,9 @@ function evaluateMainResult(wall, chamber) {
     }
 }
 
-function resultOutput(ch, val,pulmo, diastolic, segm, ef) {
+function resultOutput(ch, val, pulmo, pericardFluid, diastolic, segm, ef) {
     if (segm.startsWith('Порушення')) {
-       return segm + ef + ch + val + pulmo + diastolic; 
+       return segm + ef + ch + val + pulmo + pericardFluid + diastolic; 
     }
-    return ch + val + pulmo + diastolic + segm + ef;
+    return ch + val + pulmo + pericardFluid+ diastolic + segm + ef;
 }
