@@ -26,7 +26,8 @@ import { segmentsRender } from './js/components/segments';
 import { efREs } from './js/components/ef';
 
 import { copyResult } from './js/result/copyResult'; 
-
+import { formDataStore, resultStore } from './js/helpers/loacalStorage';
+import returnPreviousResult from './js/components/returnPreviousResult';
 
 
 let rvResult = 'Spare';
@@ -59,6 +60,7 @@ function onSubmit(e) {
     })
     console.log(formData);
 
+    formDataStore(formData);
 
     //Destructuring
     const { rv, la, aorta, ivs, lvWall, lv, ef } = formData;
@@ -122,6 +124,7 @@ function onSubmit(e) {
     ///загальний висновок
     result = resultOutput(ch, val,pulmoHypertResult, pericardialFluidResult,  diastolicResult, segmentResult, efResult);
     // console.log(result);
+    resultStore(result);
     refs.result.textContent = result;
 
 
