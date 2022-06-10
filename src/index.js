@@ -27,7 +27,7 @@ import { efREs } from './js/components/ef';
 
 import { copyResult } from './js/result/copyResult'; 
 import { formDataStore, resultStore } from './js/helpers/loacalStorage';
-import returnPreviousResult from './js/components/returnPreviousResult';
+import returnPreviousSession from './js/components/returnPreviousSession';
 
 
 let rvResult = 'Spare';
@@ -122,15 +122,17 @@ function onSubmit(e) {
 
 
     ///загальний висновок
-    result = resultOutput(ch, val,pulmoHypertResult, pericardialFluidResult,  diastolicResult, segmentResult, efResult);
+    result = resultOutput(ch, val, pulmoHypertResult, pericardialFluidResult, diastolicResult, segmentResult, efResult);
+    const ehealthCopyResult = copyResult(formData, result, segmTextCopy);
     // console.log(result);
-    resultStore(result);
+
+    resultStore({result, ehealthCopyResult});
+
+
     refs.result.textContent = result;
-
-
     ///Висновок для копіювання в медичний звіт
     // const copyResult = 'ggdg';
-    refs.copyRes.textContent = copyResult(formData,result,segmTextCopy);
+    refs.copyRes.textContent = ehealthCopyResult;
 }
 
 ///Additional functions
