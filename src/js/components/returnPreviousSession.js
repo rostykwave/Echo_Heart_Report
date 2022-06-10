@@ -1,12 +1,14 @@
 import { refs } from "../refs";
 
 const buttonref = document.querySelector('.return-result');
-buttonref.addEventListener('click', returnPreviousResult);
+buttonref.addEventListener('click', returnPreviousSession);
 
-function returnPreviousResult() {
+function returnPreviousSession() {
     const localResult = localStorage.getItem('result');
-    if (localResult) {
-        const result = localStorage.getItem('result');
-         refs.result.textContent = result;
+    const localehealthCopyResult = localStorage.getItem('ehealthCopyResult');
+
+    if (localResult && localehealthCopyResult) {
+         refs.result.textContent = localResult;
+         refs.copyRes.textContent = localehealthCopyResult;
     }
 }
