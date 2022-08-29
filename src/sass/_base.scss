@@ -49,14 +49,24 @@ img {
   border-radius: 17px;
 }
 
-.main-section{
- @include mq(tablet){
-       display: grid;
-         gap: 20px;
-         grid-template-columns: repeat(2, 1fr);
- }
+.main-section {
+  @include mq(tablet) {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
- 
+// test styles Mykola Kovalchuk
+
+.patient-info {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  align-items: center;
+  justify-content: center;
+  row-gap: 10px;
+  margin-bottom: 30px;
 }
 
 // .section__title {
@@ -68,4 +78,3 @@ img {
 
 //   color: $secondary-txt;
 // }
-

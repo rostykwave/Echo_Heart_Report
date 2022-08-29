@@ -12,11 +12,16 @@
   width: 200px;
   height: 50px;
 
-  background-color: #2767b3;
+  background-color: #5dbea3;
+  // background-color: #2767b3;
   border-radius: 7px;
 
   font-size: 16px;
   line-height: 119.18%;
   color: #ffffff;
   text-align: center;
+}
+
+.button:hover {
+  background-color: #00bba2;
 }
