@@ -1,37 +1,37 @@
+<div class="container">
+  <svg width="200">
+    <use href="./images/symbol-defs.svg#icon-RostMedical"></use>
+  </svg>
 
-  <div class="container">
-    <svg width="200">
-      <use href="./images/symbol-defs.svg#icon-RostMedical"></use>
-    </svg>
+  <form class="form" id="form">
+    <div class="patient-info">
+      <p class="section-title">Загальна інформація про пацієнта</p>
+      <input type="text" name="" id="" class="form__input" placeholder="Введіть прізвище" />
+      <input type="text" name="" id="" class="form__input" placeholder="Введіть ім'я" />
+      <input type="text" name="" id="" class="form__input" placeholder="Введіть по батькові" />
+      <button class="button" id="clear-form-btn">Очистити форму</button>
+    </div>
+    <h2 class="form__title">Протокол Ехо-КГ</h2>
 
-    <form class="form" id="form">
-      <h2 class="form__title">Протокол Ехо-КГ</h2>
+    <div class="main-section">
+      <!-- ///chambersANDwalls -->
+      <include src="./partials/chambersANDwalls.html"></include>
 
+      <!-- ///valves -->
+      <include src="./partials/valves.html"></include>
 
-      <div class="main-section">
-              <!-- ///chambersANDwalls -->
-              <include src="./partials/chambersANDwalls.html"></include>
-              
-              <!-- ///valves -->
-              <include src="./partials/valves.html"></include>
+      <!-- //Segments -->
+      <include src="./partials/segments.html"></include>
 
-              <!-- //Segments -->
-              <include src="./partials/segments.html"></include>
-              
-              
-              <section class="section result">
-                <p class="section-title">Висновок: </p>
+      <section class="section result">
+        <p class="section-title">Висновок:</p>
 
-                <div class="result--centered"> 
-                     <div class="result-textarea" id="result"></div>
+        <div class="result--centered">
+          <div class="result-textarea" id="result"></div>
 
-                    <button class="button" id="btn" type="submit">Обробити дані</button>
-      
-                </div>
-
-              </section>
-      </div>
-
-    </form>
-
-  </div>
+          <button class="button" id="btn" type="submit">Обробити дані</button>
+        </div>
+      </section>
+    </div>
+  </form>
+</div>
