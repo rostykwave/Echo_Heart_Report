@@ -14,12 +14,16 @@ function returnPreviousSession() {
   }
 
   if (localFormData) {
-    console.log(localFormData);
+    // console.log(localFormData);
+    const { surname, name, secondname } = localFormData;
 
+    refs.inputSurname.value = surname;
+    refs.inputName.value = name;
+    refs.inputSecondName.value = secondname;
     for (const key in localFormData) {
       if (Object.hasOwnProperty.call(localFormData, key)) {
         const element = localFormData[key];
-        console.log(key + ': ' + element);
+        // console.log(key + ': ' + element);
       }
     }
   }
